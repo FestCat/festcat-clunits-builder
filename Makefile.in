@@ -41,6 +41,7 @@ COPYTOBIN += $(addprefix,$(FESTVOXDIR)/st/,$(FROM_FESTVOXST_TO_BIN))
 SAVEDATBIN = $(addprefix,bin/,$(FROM_FESTVOXGENERALBIN_TO_BIN) $(FROM_FESTVOXST_TO_BIN) ) 
 
 
+
 SAVEDATETC = $(addprefix,etc/,$(FROM_FESTVOXGENERALBIN_TO_ETC))
 
 setup: festvox/$(FULLVOICENAME).scm etc/$(VOICENAME).data wav
@@ -72,16 +73,22 @@ prompts: setup
 CLEAN+= $(PROMPTDIRS)
 
 
-labs:
+labs: prompts
+	bin/make_labs prompt-wav/*wav || exit 1
 
-festival -b festvox/build_clunits.scm '(build_prompts "etc/pep.data")'
-bin/make_labs prompt-wav/*wav
-festival -b festvox/build_clunits.scm '(build_utts "etc/pep.data")'
-bin/make_pm_wave wav/*.wav
-bin/make_pm_fix pm/*.pm
-bin/simple_powernormalize wav/*wav
-bin/make_mcep wav/*wav
-festival -b festvox/build_clunits.scm '(build_clunits "etc/pep.data")'
+utts: labs
+	$(FESTIVALBIN) -b festvox/build_clunits.scm '(build_utts "etc/'$(VOICENAME).data'")' || exit 1
+
+pm:
+	bin/make_pm_wave wav/*.wav
+	bin/make_pm_fix pm/*.pm
+
+mcep:
+	bin/simple_powernormalize wav/*wav
+	bin/make_mcep wav/*wav
+
+clunits: mcep pm utts
+	$(FESTIVALBIN) -b festvox/build_clunits.scm '(build_clunits "etc/'$(VOICENAME).data'")' || exit 1
 
 
 

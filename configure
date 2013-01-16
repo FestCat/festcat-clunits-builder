@@ -1708,16 +1708,10 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
  # FIXME: Replace this by the required individual components.
-  # FIXME: Replace this by the required individual components.
 
 if test "x$ESTDIR" = x; then
    as_fn_error $? "ESTDIR was not set." "$LINENO" 5
 fi
-
-if test "x$FESTVOXDIR" = x; then
-   as_fn_error $? "FESTVOXDIR was not set." "$LINENO" 5
-fi
-
 
 if test "x$INST" = x; then
    as_fn_error $? "INST was not set." "$LINENO" 5

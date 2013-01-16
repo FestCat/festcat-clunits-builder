@@ -9,16 +9,10 @@ AC_ARG_VAR(CLOSESTVOICE, [ A similar existing voice ("upc_ca_ona_hts") ])
 AC_ARG_VAR(FESTVOXDIR, [ Festvox directory ])
 AC_ARG_VAR(WAVDIR, [ Directory where all *.wav files are. ])
 AC_ARG_VAR(ESTDIR, [ Directory where Speech Tools is. ]) # FIXME: Replace this by the required individual components.
-AC_ARG_VAR(FESTVOXDIR, [ Directory where Festvox is.])  # FIXME: Replace this by the required individual components.
 
 if test "x$ESTDIR" = x; then
    AC_MSG_ERROR(ESTDIR was not set.)
 fi
-
-if test "x$FESTVOXDIR" = x; then
-   AC_MSG_ERROR(FESTVOXDIR was not set.)
-fi
-
 
 if test "x$INST" = x; then
    AC_MSG_ERROR(INST was not set.)
