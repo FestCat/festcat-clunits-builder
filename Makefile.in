@@ -13,10 +13,17 @@ LANG=ca
 VOX=@VOX@
 TYPE=@TYPE@
 PROMPTS="@PROMPTS@"
+WAVDIR="@WAVDIR@"
 FESTIVALBIN="@FESTIVALBIN@"
+ESTDIR="@ESTDIR@"
 FESTVOXDIR="@FESTVOXDIR@"
 VOICENAME="$(INST)_$(LANG)_$(VOX)"
 FULLVOICENAME="$(VOICENAME)_$(TYPE)"
+
+# FIXME: One day these export will not be needed:
+export ESTDIR
+export FESTVOXDIR
+
 
 CLEAN=
 
@@ -36,13 +43,16 @@ SAVEDATBIN = $(addprefix,bin/,$(FROM_FESTVOXGENERALBIN_TO_BIN) $(FROM_FESTVOXST_
 
 SAVEDATETC = $(addprefix,etc/,$(FROM_FESTVOXGENERALBIN_TO_ETC))
 
-setup: festvox/$(FULLVOICENAME).scm etc/$(VOICENAME).data
+setup: festvox/$(FULLVOICENAME).scm etc/$(VOICENAME).data wav
 	$(MKDIR_P) "bin" "etc" "festvox"
 	cp -p $(COPYTOBIN) bin
 	cp -p $(addprefix,$(FESTVOXDIR)/src/general/,$(FROM_FESTVOXGENERALBIN_TO_ETC)) etc
 	cp -p $(addprefix,$(FESTVOXDIR)/st/,$(FROM_FESTVOXST_TO_FESTVOX)) festvox
 
 CLEAN += $(SAVEDATBIN) $(SAVEDATETC) festvox/build_st.scm
+
+wav:
+	cp -pr $(WAVDIR) "$@" 
 
 etc/$(VOICENAME).data:
 	cp -p $(PROMPTS) "$@"
@@ -58,11 +68,26 @@ PROMPTDIRS="prompt-utt" "prompt-lab" "prompt-wav"
 prompts: setup
 	$(MKDIR_P) $(PROMPTDIRS)
 	$(FESTIVALBIN) -b festvox/build_clunits.scm '(build_prompts "etc/'$(VOICENAME).data'")' || exit 1
+
 CLEAN+= $(PROMPTDIRS)
+
+
+labs:
+
+festival -b festvox/build_clunits.scm '(build_prompts "etc/pep.data")'
+bin/make_labs prompt-wav/*wav
+festival -b festvox/build_clunits.scm '(build_utts "etc/pep.data")'
+bin/make_pm_wave wav/*.wav
+bin/make_pm_fix pm/*.pm
+bin/simple_powernormalize wav/*wav
+bin/make_mcep wav/*wav
+festival -b festvox/build_clunits.scm '(build_clunits "etc/pep.data")'
+
+
 
 clean:
 	rm -rf $(CLEAN) 
 
 distclean: clean
-	rm festvox/CLUNITS_clunits.scm festvox/build_clunits.scm etc/voice.defs Makefile
+	rm festvox/CLUNITS_clunits.scm festvox/build_clunits.scm etc/voice.defs Makefile wav
 
