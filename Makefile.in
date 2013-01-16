@@ -1,0 +1,68 @@
+#!/usr/bin/make
+
+# Meta Information:
+PACKAGE_NAME = @PACKAGE_NAME@
+PACKAGE_TARNAME = @PACKAGE_TARNAME@
+PACKAGE_VERSION = @PACKAGE_VERSION@
+PACKAGE_STRING = @PACKAGE_STRING@
+PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
+PACKAGE_URL = @PACKAGE_URL@
+
+INST=@INST@
+LANG=ca
+VOX=@VOX@
+TYPE=@TYPE@
+PROMPTS="@PROMPTS@"
+FESTIVALBIN="@FESTIVALBIN@"
+FESTVOXDIR="@FESTVOXDIR@"
+VOICENAME="$(INST)_$(LANG)_$(VOX)"
+FULLVOICENAME="$(VOICENAME)_$(TYPE)"
+
+CLEAN=
+
+MKDIR_P = @MKDIR_P@
+
+all: setup prompts
+
+FROM_FESTVOXGENERALBIN_TO_ETC= emu_lab.tpl emu_pm.tpl emu_f0.tpl emu_hier.tpl
+FROM_FESTVOXGENERALBIN_TO_BIN= make_labs prompt_them make_lpc make_pm make_pm_wave make_pmlab_pm make_pm_pmlab make_pm_fix make_f0 get_lars get_wavs do_build find_powerfactors simple_powernormalize find_powercontours contour_powernormalize make_dist make_cmn traintest make_samples reduce_prompts synthfile
+FROM_FESTVOXST_TO_BIN= sphinxtrain sphinx_lab
+FROM_FESTVOXST_TO_FESTVOX= build_st.scm
+
+COPYTOBIN = $(addprefix,$(FESTVOXDIR)/src/general/,$(FROM_FESTVOXGENERALBIN_TO_BIN)) 
+COPYTOBIN += $(addprefix,$(FESTVOXDIR)/st/,$(FROM_FESTVOXST_TO_BIN))
+SAVEDATBIN = $(addprefix,bin/,$(FROM_FESTVOXGENERALBIN_TO_BIN) $(FROM_FESTVOXST_TO_BIN) ) 
+
+
+SAVEDATETC = $(addprefix,etc/,$(FROM_FESTVOXGENERALBIN_TO_ETC))
+
+setup: festvox/$(FULLVOICENAME).scm etc/$(VOICENAME).data
+	$(MKDIR_P) "bin" "etc" "festvox"
+	cp -p $(COPYTOBIN) bin
+	cp -p $(addprefix,$(FESTVOXDIR)/src/general/,$(FROM_FESTVOXGENERALBIN_TO_ETC)) etc
+	cp -p $(addprefix,$(FESTVOXDIR)/st/,$(FROM_FESTVOXST_TO_FESTVOX)) festvox
+
+CLEAN += $(SAVEDATBIN) $(SAVEDATETC) festvox/build_st.scm
+
+etc/$(VOICENAME).data:
+	cp -p $(PROMPTS) "$@"
+
+CLEAN+=etc/$(VOICENAME).data
+
+festvox/$(FULLVOICENAME).scm: festvox/CLUNITS_clunits.scm
+	cp -p "$<" "$@"
+
+CLEAN+= festvox/$(FULLVOICENAME).scm
+
+PROMPTDIRS="prompt-utt" "prompt-lab" "prompt-wav"
+prompts: setup
+	$(MKDIR_P) $(PROMPTDIRS)
+	$(FESTIVALBIN) -b festvox/build_clunits.scm '(build_prompts "etc/'$(VOICENAME).data'")' || exit 1
+CLEAN+= $(PROMPTDIRS)
+
+clean:
+	rm -rf $(CLEAN) 
+
+distclean: clean
+	rm festvox/CLUNITS_clunits.scm festvox/build_clunits.scm etc/voice.defs Makefile
+
