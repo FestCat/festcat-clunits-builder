@@ -1,0 +1,78 @@
+diff -uNra --exclude='._*' festvox.orig/src/general/cmn_main.cc festvox/src/general/cmn_main.cc
+--- festvox.orig/src/general/cmn_main.cc	2006-08-16 19:15:21.000000000 +0100
++++ festvox/src/general/cmn_main.cc	2011-04-25 10:21:44.000000000 +0100
+@@ -82,7 +82,7 @@
+     find_meanstd(ss,files);
+ 
+     printf("Applying stats\n");
+-    for (p=files.head(); p != 0; p=next(p))
++    for (p=files.head(); p != 0; p=p->next())
+     {
+ 	tt.load(files(p));
+ 	printf("%s\n",(const char *)files(p));
+@@ -121,7 +121,7 @@
+     for (i=0; i< num_phones; i++)
+ 	sstable[i] = new EST_SuffStats[tt.num_channels()];
+     
+-    for (p=files.head(); p != 0; p=next(p))
++    for (p=files.head(); p != 0; p=p->next())
+     {
+ 	tt.load(files(p));
+ 	lll = EST_String("lab/")+basename(files(p)).before(".")+".lab";
+@@ -143,9 +143,9 @@
+ 		    v = 100;
+ 		sstable[phoneid][j] += v;
+ 	    }
+-	    if (s && next(s) && (s->F("end") < tt.t(i)))
++	    if (s && s->next() && (s->F("end") < tt.t(i)))
+ 	    {
+-		s = next(s);
++		s = s->next();
+ 		phoneid = get_phone_id(s->S("name"));
+ /*		printf("%s\n",phonetab[phoneid]); */
+ 	    }
+@@ -205,9 +205,9 @@
+ //	    else if (tt.a_no_check(i,j) < -50)
+ //		tt.a_no_check(i,j) = -50;
+ 	}
+-	while (s && next(s) && (s->F("end") < tt.t(i)))
++	while (s && s->next() && (s->F("end") < tt.t(i)))
+ 	{
+-	    s = next(s);
++	    s = s->next();
+ 	    phoneid = get_phone_id(s->S("name"));
+ 	}
+     }
+diff -uNra --exclude='._*' festvox.orig/src/general/phonealign_main.cc festvox/src/general/phonealign_main.cc
+--- festvox.orig/src/general/phonealign_main.cc	2000-07-29 00:49:00.000000000 +0100
++++ festvox/src/general/phonealign_main.cc	2011-04-25 10:21:59.000000000 +0100
+@@ -291,7 +291,7 @@
+     copy_relation(ilabel,olabel);
+ 
+     // Map the end feature values
+-    for (i=olabel.head(); i != 0; i=next(i))
++    for (i=olabel.head(); i != 0; i=i->next())
+     {
+ 	end = i->F("end");
+ 	thisi = itrack.index(end);
+diff -uNra --exclude='._*' festvox.orig/src/general/powcont_norm_main.cc festvox/src/general/powcont_norm_main.cc
+--- festvox.orig/src/general/powcont_norm_main.cc	2000-11-29 16:29:47.000000000 +0000
++++ festvox/src/general/powcont_norm_main.cc	2011-04-25 10:22:29.000000000 +0100
+@@ -71,7 +71,7 @@
+     {
+ 	maxthres = al.fval("-max");
+ 	for (powerpoint = powcont.head(); powerpoint; 
+-	     powerpoint = next(powerpoint))
++	     powerpoint = powerpoint->next())
+ 	{
+ 	    if (fabs(powerpoint->F("name")) > maxthres)
+ 		powerpoint->set("name",maxthres);
+@@ -98,7 +98,7 @@
+ //	       factor,increment,end_sample,i);
+ 	if (i == end_sample)
+ 	{
+-	    powerpoint = next(powerpoint);
++	    powerpoint = powerpoint->next();
+ 	    if (powerpoint == 0)
+ 		break;
+ 	    start_sample = end_sample;

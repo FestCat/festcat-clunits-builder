@@ -106,7 +106,7 @@ Build cluster synthesizer for the given recorded data and domain."
   "(build_clunits_init file)
 Get setup ready for (do_all) (or (do_init))."
   (eval (list @INST@_@LANG@_@VOX@::closest_voice))
-  (@INST@_@LANG@_@VOX@::select_phoneset)
+  (upc_ca_generic::select_phoneset)
 
   ;; Add specific fileids to the list for this run
   (set! @INST@_@LANG@_@VOX@::dt_params
