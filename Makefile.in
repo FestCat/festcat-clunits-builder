@@ -35,10 +35,12 @@ FROM_FESTVOXGENERALBIN_TO_ETC = emu_lab.tpl emu_pm.tpl emu_f0.tpl emu_hier.tpl
 FROM_FESTVOXGENERALBIN_TO_BIN = make_labs prompt_them make_lpc make_pm make_pm_wave make_pmlab_pm make_pm_pmlab make_pm_fix make_f0 get_lars get_wavs do_build find_powerfactors simple_powernormalize find_powercontours contour_powernormalize make_dist make_cmn traintest make_samples reduce_prompts synthfile
 FROM_FESTVOXST_TO_BIN= sphinxtrain sphinx_lab
 FROM_FESTVOXST_TO_FESTVOX= build_st.scm
+FROM_FESTVOXUNITSEL_TO_BIN = make_mcep
 
 COPYTOBIN = $(addprefix $(FESTVOXDIR)/src/general/,$(FROM_FESTVOXGENERALBIN_TO_BIN)) 
 COPYTOBIN += $(addprefix $(FESTVOXDIR)/src/st/,$(FROM_FESTVOXST_TO_BIN))
-SAVEDATBIN = $(addprefix bin/,$(FROM_FESTVOXGENERALBIN_TO_BIN) $(FROM_FESTVOXST_TO_BIN) ) 
+COPYTOBIN += $(addprefix $(FESTVOXDIR)/src/unitsel,$(FROM_FESTVOXUNITSEL_TO_BIN))
+SAVEDATBIN = $(addprefix bin/,$(FROM_FESTVOXGENERALBIN_TO_BIN) $(FROM_FESTVOXST_TO_BIN) $(FROM_FESTVOXUNITSEL_TO_BIN)) 
 
 
 
@@ -76,6 +78,7 @@ CLEAN+= $(PROMPTDIRS)
 labs:
 	$(MKDIR_P) "prompt-cep" "cep" "lab"
 	bin/make_labs prompt-wav/*wav || exit 1
+CLEAN += "cep" "lab" "prompt-cep"
 
 utts:
 	$(MKDIR_P) "festival/utts"
@@ -86,11 +89,12 @@ pm:
 	cp "etc/$(VOICENAME).data" etc/txt.done.data
 	bin/make_pm_wave wav/*.wav
 	bin/make_pm_fix pm/*.pm
-CLEAN += "etc/txt.done.data"
+CLEAN += "etc/txt.done.data" "pm"
 
 mcep:
 	bin/simple_powernormalize wav/*wav
 	bin/make_mcep wav/*wav
+CLEAN += "wavn"
 
 clunits:
 	$(MKDIR_P) "festival/feats" "festival/disttabs" "festival/trees"
