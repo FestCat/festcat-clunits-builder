@@ -44,7 +44,7 @@ SAVEDATBIN = $(addprefix bin/,$(FROM_FESTVOXGENERALBIN_TO_BIN) $(FROM_FESTVOXST_
 
 
 
-SAVEDATETC = $(addprefix,etc/,$(FROM_FESTVOXGENERALBIN_TO_ETC))
+SAVEDATETC = $(addprefix etc/,$(FROM_FESTVOXGENERALBIN_TO_ETC))
 
 setup: festvox/$(FULLVOICENAME).scm etc/$(VOICENAME).data wav
 	$(MKDIR_P) "bin" "etc" "festvox"
@@ -100,11 +100,12 @@ clunits:
 	$(MKDIR_P) "festival/feats" "festival/disttabs" "festival/trees"
 	$(FESTIVALBIN) -b festvox/build_clunits.scm '(build_clunits "etc/'$(VOICENAME).data'")' || exit 1
 
+CLEAN += "festival/disttabs"
 
 
 clean:
 	rm -rf $(CLEAN) 
 
 distclean: clean
-	rm festvox/CLUNITS_clunits.scm festvox/build_clunits.scm etc/voice.defs Makefile wav
+	rm -rf festvox/CLUNITS_clunits.scm festvox/build_clunits.scm etc/voice.defs Makefile wav mcep festival/clunits/$(VOICENAME).catalogue festival/feats festival/trees festival/utts
 
