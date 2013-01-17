@@ -48,7 +48,24 @@ A similar voice to your recordings:
 
 ## Configure:
 
+I know the syntax may be unusual, but please stick to it. Simply change your paths, your "VOX" and "GENDER".
 
         ./configure ESTDIR="/home/sergio/Escriptori/tmptest/festival_suite/speech_tools" INST="upc" VOX="pol" GENDER="male" PROMPTS="/home/sergio/Escriptori/tmptest/upc_ca_prompts-1.0/etc/pol.data" WAVDIR="/home/sergio/Escriptori/tmptest/upc_ca_pol_raw/wav" CLOSESTVOICE="upc_ca_pep_clunits" FESTVOXDIR="/home/sergio/Escriptori/tmptest/festival_suite/festvox" --enable-festivalpath="/home/sergio/Escriptori/tmptest/festival_suite/festival/bin"
 
 
+## Make:
+
+If you type `make` everything will be done. But it's better if you run it step by step:
+
+        make setup 
+        make prompts
+        make labs
+        make utts
+        make pm
+        make mcep
+        make clunits
+
+
+## Installation and testing:
+
+Please check any existing clunits voice to see what files are needed. 
