@@ -38,6 +38,7 @@ The basic Catalan package:
         tar xzf upc_ca_base-2.1.5.tgz
         cd upc_ca_base-2.1.5
         ./configure --enable-onlyinstall --enable-festivalpath="/home/sergio/Escriptori/tmptest/festival_suite/festival/bin"
+        make
 
 A similar voice to your recordings:
 
