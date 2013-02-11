@@ -36,15 +36,15 @@ The basic Catalan package:
 
         wget http://festcat.talp.cat/download/upc_ca_base-2.1.5.tgz
         tar xzf upc_ca_base-2.1.5.tgz
-        cd upc_ca_base
-        ./configure --enable-only-install --enable-festivalpath="/home/sergio/Escriptori/tmptest/festival_suite/festival/bin"
+        cd upc_ca_base-2.1.5
+        ./configure --enable-onlyinstall --enable-festivalpath="/home/sergio/Escriptori/tmptest/festival_suite/festival/bin"
 
 A similar voice to your recordings:
 
         wget http://festcat.talp.cat/download/upc_ca_pep_clunits-1.0.tgz # PLEASE REPLACE THIS
         tar xzf upc_ca_pep_clunits-1.0.tgz
         mkdir -p /home/sergio/Escriptori/tmptest/festival_suite/festival/lib/voices/catalan
-        cp upc_ca_pep_clunits /home/sergio/Escriptori/tmptest/festival_suite/festival/lib/voices/catalan/
+        cp -r upc_ca_pep_clunits /home/sergio/Escriptori/tmptest/festival_suite/festival/lib/voices/catalan/
 
 ## Configure:
 
