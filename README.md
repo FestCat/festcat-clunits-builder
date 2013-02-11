@@ -49,9 +49,25 @@ A similar voice to your recordings:
 
 ## Configure:
 
-I know the syntax may be unusual, but please stick to it. Simply change your paths, your "VOX" and "GENDER".
+I know the syntax may be unusual, but please stick to it:
 
-        ./configure ESTDIR="/home/sergio/Escriptori/tmptest/festival_suite/speech_tools" INST="upc" VOX="pol" GENDER="male" PROMPTS="/home/sergio/Escriptori/tmptest/upc_ca_prompts-1.0/etc/pol.data" WAVDIR="/home/sergio/Escriptori/tmptest/upc_ca_pol_raw/wav" CLOSESTVOICE="upc_ca_pep_clunits" FESTVOXDIR="/home/sergio/Escriptori/tmptest/festival_suite/festvox" --enable-festivalpath="/home/sergio/Escriptori/tmptest/festival_suite/festival/bin"
+  - Choose a voice name (i.e. `"pol"`)
+  - Set the gender (i.e. `"male"`)
+  - Choose a similar voice (i.e. `"upc_ca_pep_clunits"`)
+  - Set the path to your prompts in festival format
+  - Set the path to your recordings in 16kHz and 16bit format.
+  - Set the path to all the `festival_suite` paths
+
+Use the following syntax (I know the `--enable-festivalpath` is not consistent, that will change in the future):
+
+        ./configure \
+        INST="upc" VOX="pol" GENDER="male" \
+        CLOSESTVOICE="upc_ca_pep_clunits" \
+        PROMPTS="/home/sergio/Escriptori/tmptest/upc_ca_prompts-1.0/etc/pol.data" \
+        WAVDIR="/home/sergio/Escriptori/tmptest/upc_ca_pol_raw/wav" \
+        ESTDIR="/home/sergio/Escriptori/tmptest/festival_suite/speech_tools" \
+        FESTVOXDIR="/home/sergio/Escriptori/tmptest/festival_suite/festvox" \
+        --enable-festivalpath="/home/sergio/Escriptori/tmptest/festival_suite/festival/bin"
 
 
 ## Make:
