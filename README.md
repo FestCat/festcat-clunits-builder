@@ -13,34 +13,41 @@
 
 The festival suite:
 
-        mkdir festival_suite
+        mkdir workdir
+        wget https://github.com/FestCat/festcat-clunits-builder/archive/master.zip
+        unzip master.zip || exit 1
+        cd festcat-clunits-builder-master
+        mkdir festival_suite || exit 1
         cd festival_suite
         wget http://www.cstr.ed.ac.uk/downloads/festival/2.1/speech_tools-2.1-release.tar.gz
         wget http://www.cstr.ed.ac.uk/downloads/festival/2.1/festival-2.1-release.tar.gz
         wget http://www.speech.cs.cmu.edu/15-492/assignments/tts/packed2010/festvox-2.4-current.tar.gz
-        tar xzf speech_tools-2.1-release.tar.gz
-        tar xzf festival-2.1-release.tar.gz
-        tar xzf festvox-2.4-current.tar.gz
+        tar xzf speech_tools-2.1-release.tar.gz || exit 1
+        tar xzf festival-2.1-release.tar.gz || exit 1
+        tar xzf festvox-2.4-current.tar.gz || exit 1
         cd speech_tools
-        ./configure
-        make
+        ./configure || exit 1
+        make || exit 1
         cd ../festival
-        ./configure
-        make
+        ./configure || exit 1
+        make || exit 1
         cd ../festvox
-        patch -p1 < ../../festvox-patch.diff
-        ./configure
-        make
+        patch -p1 < ../../festvox-patch.diff || exit 1
+        ./configure || exit 1
+        make || exit 1
+        cd ..
 
 The basic Catalan package:
 
         wget http://festcat.talp.cat/download/upc_ca_base-2.1.5.tgz
-        tar xzf upc_ca_base-2.1.5.tgz
+        tar xzf upc_ca_base-2.1.5.tgz || exit 1
         cd upc_ca_base-2.1.5
-        ./configure --enable-onlyinstall --enable-festivalpath="/home/sergio/Escriptori/tmptest/festival_suite/festival/bin"
+        ./configure --enable-onlyinstall \
+        --enable-festivalpath="/home/sergio/Escriptori/tmptest/festival_suite/festival/bin" 
         make
 
-A similar voice to your recordings:
+Install a similar voice to your already existing recordings. This voice is used as a reference
+for the phonetic labelling.
 
         wget http://festcat.talp.cat/download/upc_ca_pep_clunits-1.0.tgz # PLEASE REPLACE THIS
         tar xzf upc_ca_pep_clunits-1.0.tgz
@@ -51,14 +58,15 @@ A similar voice to your recordings:
 
 I know the syntax may be unusual, but please stick to it:
 
-  - Choose a voice name (i.e. `"pol"`)
+  - Choose a new name for your voice (i.e. `"pol"`)
   - Set the gender (i.e. `"male"`)
   - Choose a similar voice (i.e. `"upc_ca_pep_clunits"`)
   - Set the path to your prompts in festival format
   - Set the path to your recordings in 16kHz and 16bit format.
   - Set the path to all the `festival_suite` paths
 
-Use the following syntax (I know the `--enable-festivalpath` is not consistent, that will change in the future):
+Use the following syntax (I know the `--enable-festivalpath` is not 
+consistent with the rest of the arguments, that will be changed in the future):
 
         ./configure \
         INST="upc" VOX="pol" GENDER="male" \
@@ -82,7 +90,58 @@ If you type `make` everything will be done. But it's better if you run it step b
         make mcep
         make clunits
 
+### Setup
+
+This step copies the necessary files from festvox, and the recordings 
+and text prompts in festival format to the template directory.
+
+### Prompts
+
+This step uses the reference voice to synthesize the text prompts.
+A phonetic labelling reference will be generated in prompt-lab directory.
+
+### Labs
+
+This step fits the new recordings (in `wav` directory) to the synthesized 
+labels (in `prompt-lab` directory).
+You may want to check the labelling result (available at `lab` directory) 
+with `wavesurfer`.
+
+#### Checking labels with wavesurfer:
+
+1. Open Wave file
+2. Right click -> Create Pane -> Transcription
+3. Right click on transcription pane -> Load transcription -> Choose lab
+file.
+
+Alternatively you can just put lab and wav files together in a single
+directory. Then wavesurfer will find label file automatically.
+
+### Utts
+
+This step merges the segmentation information from the aligned labels 
+with the prompt-utt files to generate the final utt files which can be used
+by festival.
+
+### pm
+
+This step extracts the pitchmark from the audio recordings.
+
+### mcep
+
+This step extracts the mel cepstral coefficients from the audio recordings.
+
+### clunits
+
+This final step builds the cluster units combining all the previous information.
 
 ## Installation and testing:
 
-Please check any existing clunits voice to see what files are needed. 
+To use the new voice you will need the following files and directories:
+
+  - `festvox`
+  - `festival/clunits/upc_ca_pep.catalogue`
+  - `festival/trees/upc_ca_pep.tree`
+  - `wav`
+  - `mcep`
+
