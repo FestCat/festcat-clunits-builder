@@ -126,9 +126,11 @@ with `wavesurfer`.
 
 #### Checking labels with wavesurfer:
 
-1. Open Wave file
-2. Right click -> Create Pane -> Transcription
-3. Right click on transcription pane -> Load transcription -> Choose lab
+1. Install wavesurfer (in Debian/Ubuntu `sudo apt-get install wavesurfer`)
+2. Open wavesurfer (in Debian/Ubuntu you will probably need `padsp wavesurfer`)
+3. Open Wave file
+4. Right click -> Create Pane -> Transcription
+5. Right click on transcription pane -> Load transcription -> Choose lab
 file.
 
 Alternatively you can just put lab and wav files together in a single
