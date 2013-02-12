@@ -28,6 +28,7 @@ hand, you should provide some recordings and the prompts in festival format.
 The festival suite:
 
         mkdir workdir
+        cd workdir
         wget https://github.com/FestCat/festcat-clunits-builder/archive/master.zip
         unzip master.zip || exit 1
         cd festcat-clunits-builder-master
