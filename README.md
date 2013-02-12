@@ -1,7 +1,14 @@
 # Festcat clunits template
 
+This template allows building a clunits Catalan voice.
 
 ## Dependencies:
+
+The dependencies are splitted in two groups. The *downloadable dependencies*
+are dependencies that can be downloaded from the Internet easily. On the other
+hand, you should provide some recordings and the prompts in festival format.
+
+### Downloadable dependencies
 
 1. [Speech tools 2.1](http://www.cstr.ed.ac.uk/downloads/festival/2.1/speech_tools-2.1-release.tar.gz)
 2. [Festival 2.1](http://www.cstr.ed.ac.uk/downloads/festival/2.1/festival-2.1-release.tar.gz)
@@ -9,7 +16,14 @@
 4. [upc_ca_base](http://festcat.talp.cat/download/upc_ca_base-2.1.5.tgz)
 5. A voice similar to your recordings (i.e: [pep](http://festcat.talp.cat/download/upc_ca_pep_clunits-1.0.tgz)):
 
-### Compile them:
+### Prompts and recordings
+
+1. Prompts in festival format (you may check some 
+   in [upc_ca_prompts](http://festcat.talp.cat/download/data/upc_ca_prompts-1.0.tar.bz2))
+2. Recordings (currently this has been tested with 16kHZ, 16 bit wav recordings)
+
+
+### Downloading and compiling dependencies:
 
 The festival suite:
 
@@ -54,19 +68,21 @@ for the phonetic labelling.
         mkdir -p /home/sergio/Escriptori/tmptest/festival_suite/festival/lib/voices/catalan
         cp -r upc_ca_pep_clunits /home/sergio/Escriptori/tmptest/festival_suite/festival/lib/voices/catalan/
 
-## Configure:
+## Setting the template parameters for your voice:
 
-I know the syntax may be unusual, but please stick to it:
+Now the system needs to know information from your speaker. 
+This includes a name for the new voice, its gender and some path settings.
+By now you should decide/know:
 
-  - Choose a new name for your voice (i.e. `"pol"`)
-  - Set the gender (i.e. `"male"`)
-  - Choose a similar voice (i.e. `"upc_ca_pep_clunits"`)
-  - Set the path to your prompts in festival format
-  - Set the path to your recordings in 16kHz and 16bit format.
-  - Set the path to all the `festival_suite` paths
+  - The new name for your voice (i.e. `"pol"`)
+  - The gender of your speaker (i.e. `"male"`)
+  - A similar similar voice to the one you recorded (i.e. `"upc_ca_pep_clunits"`)
+  - The path to your prompt file in festival format
+  - The path to your recordings in 16kHz and 16bit wav format.
+  - The path to speech-tools, festival and festvox.
 
 Use the following syntax (I know the `--enable-festivalpath` is not 
-consistent with the rest of the arguments, that will be changed in the future):
+consistent with the rest of the arguments, that might be changed in the future):
 
         ./configure \
         INST="upc" VOX="pol" GENDER="male" \
@@ -77,10 +93,10 @@ consistent with the rest of the arguments, that will be changed in the future):
         FESTVOXDIR="/home/sergio/Escriptori/tmptest/festival_suite/festvox" \
         --enable-festivalpath="/home/sergio/Escriptori/tmptest/festival_suite/festival/bin"
 
+## Creating the synthetic clunits voice:
 
-## Make:
-
-If you type `make` everything will be done. But it's better if you run it step by step:
+If you type `make` everything will be done. But it's better if you run it 
+step by step understanding what is happening:
 
         make setup 
         make prompts
