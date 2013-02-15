@@ -25,49 +25,27 @@ hand, you should provide some recordings and the prompts in festival format.
 
 ### Downloading and compiling dependencies:
 
-The festival suite:
+If you have not downloaded this package, you may want to run:
 
         mkdir workdir
         cd workdir
         wget https://github.com/FestCat/festcat-clunits-builder/archive/master.zip
         unzip master.zip || exit 1
         cd festcat-clunits-builder-master
-        mkdir festival_suite || exit 1
-        cd festival_suite
-        wget http://www.cstr.ed.ac.uk/downloads/festival/2.1/speech_tools-2.1-release.tar.gz
-        wget http://www.cstr.ed.ac.uk/downloads/festival/2.1/festival-2.1-release.tar.gz
-        wget http://www.speech.cs.cmu.edu/15-492/assignments/tts/packed2010/festvox-2.4-current.tar.gz
-        tar xzf speech_tools-2.1-release.tar.gz || exit 1
-        tar xzf festival-2.1-release.tar.gz || exit 1
-        tar xzf festvox-2.4-current.tar.gz || exit 1
-        cd speech_tools
-        ./configure || exit 1
-        make || exit 1
-        cd ../festival
-        ./configure || exit 1
-        make || exit 1
-        cd ../festvox
-        patch -p1 < ../../festvox-patch.diff || exit 1
-        ./configure || exit 1
-        make || exit 1
-        cd ..
+
+Download and install the festival suite:
+
+        ./train_voice "festival_suite"
 
 The basic Catalan package:
 
-        wget http://festcat.talp.cat/download/upc_ca_base-2.1.5.tgz
-        tar xzf upc_ca_base-2.1.5.tgz || exit 1
-        cd upc_ca_base-2.1.5
-        ./configure --enable-onlyinstall \
-        --enable-festivalpath="/home/sergio/Escriptori/tmptest/festival_suite/festival/bin" 
-        make
+        ./train_voice "festcat_base"
 
 Install a similar voice to your already existing recordings. This voice is used as a reference
 for the phonetic labelling.
 
-        wget http://festcat.talp.cat/download/upc_ca_pep_clunits-1.0.tgz # PLEASE REPLACE THIS
-        tar xzf upc_ca_pep_clunits-1.0.tgz
-        mkdir -p /home/sergio/Escriptori/tmptest/festival_suite/festival/lib/voices/catalan
-        cp -r upc_ca_pep_clunits /home/sergio/Escriptori/tmptest/festival_suite/festival/lib/voices/catalan/
+        ./train_voice "festcat_closest_voice" "upc_ca_pep_clunits"
+
 
 ## Setting the template parameters for your voice:
 
@@ -75,24 +53,21 @@ Now the system needs to know information from your speaker.
 This includes a name for the new voice, its gender and some path settings.
 By now you should decide/know:
 
-  - The new name for your voice (i.e. `"pol"`)
-  - The gender of your speaker (i.e. `"male"`)
-  - A similar similar voice to the one you recorded (i.e. `"upc_ca_pep_clunits"`)
+  - The new name for your voice (i.e. `pol`)
+  - The gender of your speaker (i.e. `male`)
+  - A similar similar voice to the one you recorded (i.e. `upc_ca_pep_clunits`)
   - The path to your prompt file in festival format
   - The path to your recordings in 16kHz and 16bit wav format.
-  - The path to speech-tools, festival and festvox.
 
 Use the following syntax (I know the `--enable-festivalpath` is not 
 consistent with the rest of the arguments, that might be changed in the future):
 
-        ./configure \
         INST="upc" VOX="pol" GENDER="male" \
         CLOSESTVOICE="upc_ca_pep_clunits" \
-        PROMPTS="/home/sergio/Escriptori/tmptest/upc_ca_prompts-1.0/etc/pol.data" \
-        WAVDIR="/home/sergio/Escriptori/tmptest/upc_ca_pol_raw/wav" \
-        ESTDIR="/home/sergio/Escriptori/tmptest/festival_suite/speech_tools" \
-        FESTVOXDIR="/home/sergio/Escriptori/tmptest/festival_suite/festvox" \
-        --enable-festivalpath="/home/sergio/Escriptori/tmptest/festival_suite/festival/bin"
+        PROMPTS="/promptsdirectory/pol.data" \
+        WAVDIR="/actualrecordings/wav" \
+        ./train_voice "configure_template"
+
 
 ## Creating the synthetic clunits voice:
 
@@ -109,8 +84,8 @@ step by step understanding what is happening:
 
 ### Setup
 
-This step copies the necessary files from festvox, and the recordings 
-and text prompts in festival format to the template directory.
+This step copies the necessary files from festvox, the recordings 
+and the text prompts (in festival format) to the template directory.
 
 ### Prompts
 
@@ -121,7 +96,8 @@ A phonetic labelling reference will be generated in prompt-lab directory.
 
 This step fits the new recordings (in `wav` directory) to the synthesized 
 labels (in `prompt-lab` directory).
-You may want to check the labelling result (available at `lab` directory) 
+As the alignment algorithm is not very robust to dialectal and other changes,
+you may want to check the labelling result (available at `lab` directory) 
 with `wavesurfer`.
 
 #### Checking labels with wavesurfer:
@@ -140,11 +116,14 @@ directory. Then wavesurfer will find label file automatically.
 
 This step merges the segmentation information from the aligned labels 
 with the prompt-utt files to generate the final utt files which can be used
-by festival.
+by festival. These .utt files are available at the `festival/utts` subdirectory
+and are required for building HTS voices.
 
 ### pm
 
-This step extracts the pitchmark from the audio recordings.
+This step extracts the pitchmark from the audio recordings. Using a 
+laryngograph can improve this step (TODO: the Makefile should be adapted
+for that, pull requests are welcome).
 
 ### mcep
 
@@ -152,9 +131,9 @@ This step extracts the mel cepstral coefficients from the audio recordings.
 
 ### clunits
 
-This final step builds the cluster units combining all the previous information.
+This final step builds the cluster units.
 
-## Installation and testing:
+## Packaging and installation:
 
 To use the new voice you will need the following files and directories:
 
@@ -163,4 +142,23 @@ To use the new voice you will need the following files and directories:
   - `festival/trees/upc_ca_pep.tree`
   - `wav`
   - `mcep`
+
+Place these files and directories in a directory named `$INST_ca_$VOX_clunits`
+(replace `$INST` and `$VOX` by your institution and your voice name 
+respectively).
+
+It is highly recommended to add a `doc` directory with some documentation,
+copyright information and a suitable license. Given that the clunits voice
+is mainly data, [CC-BY-SA](http://creativecommons.org/licenses/by-sa/3.0/) 
+seems a sensible choice. Release your recordings under a free license if you 
+have the chance, so all the community can benefit from them.
+
+The `$INST_ca_$VOX_clunits` directory has to be copied to 
+`festival/lib/voices/catalan/` or to the equivalent directory for your 
+particular distribution (i.e. in Debian would be 
+`/usr/share/festival/voices/catalan/`.
+
+The voice can be used from festival with the command 
+`(voice_$INST_ca_$VOX_clunits)` before the `tts` command.
+
 

@@ -1,0 +1,89 @@
+#!/bin/bash
+
+function festival_suite() {
+	mkdir festival_suite || exit 1
+	cd festival_suite
+	wget http://www.cstr.ed.ac.uk/downloads/festival/2.1/speech_tools-2.1-release.tar.gz
+	wget http://www.cstr.ed.ac.uk/downloads/festival/2.1/festival-2.1-release.tar.gz
+	wget http://www.speech.cs.cmu.edu/15-492/assignments/tts/packed2010/festvox-2.4-current.tar.gz
+	tar xzf speech_tools-2.1-release.tar.gz || exit 1
+	tar xzf festival-2.1-release.tar.gz || exit 1
+	tar xzf festvox-2.4-current.tar.gz || exit 1
+	cd speech_tools
+	./configure || exit 1
+	make || exit 1
+	cd ../festival
+	./configure || exit 1
+	make || exit 1
+	cd ../festvox
+	patch -p1 < ../../festvox-patch.diff || exit 1
+	./configure || exit 1
+	make || exit 1
+	cd ..
+}
+
+function festcat_base() {
+        cd festival_suite
+        wget "http://festcat.talp.cat/download/upc_ca_base-2.1.5.tgz"
+        tar xzf upc_ca_base-2.1.5.tgz || exit 1
+        cd upc_ca_base-2.1.5
+        FESTIVALDIR=`pwd`"/festival/bin"
+        ./configure --enable-onlyinstall \
+        --enable-festivalpath="${FESTIVALDIR}"
+        make
+        cd ..
+}
+
+function festcat_closest_voice() {
+	voice="$1"
+        cd festival_suite
+        wget "http://festcat.talp.cat/download/${voice}-1.0.tgz"
+        tar xzf ${voice}-1.0.tgz || exit 1
+        mkdir -p "festival/lib/voices/catalan" || exit 1
+        cp -r upc_ca_pep_clunits festival/lib/voices/catalan
+        cd ..
+
+}
+
+function raw2wav() {
+which sox || (echo "sox not found. Please install it." ; exit 1 )
+rawdir="$1"
+sampfreq="$2" # 48000 (sampling frequency in Hz of raw recordings)
+bits="$3" # 16 (bits per sample)
+encoding="$4" # "signed-integer" (sample encoding)
+mkdir -p "wav"
+for fitx in $(ls "${rawdir}"/*.raw); do
+  filename=$(basename "$fitx" ".raw")
+  sox -r "${sampfreq}" -b "${bits}" -e "${encoding}" "$fitx" -r 16000 "wav/${filename}.wav"
+done
+}
+
+
+function configure_template() {
+        echo "Voice name will be: ${INST}_ca_${VOX}_clunits"
+        ./configure \
+        ESTDIR=`pwd`"/festival_suite/speech_tools" \
+        FESTVOXDIR=`pwd`"/festival_suite/festvox" \
+        --enable-festivalpath=`pwd`"/festival_suite/festival/bin" || exit 1
+}
+
+
+if [ $# = 1 ] ; then
+   C="$1"
+   shift
+   case "$C" in
+      "festival_suite")
+          festival_suite
+          ;;
+      "festcat_base")
+          festcat_base
+          ;;
+      "festcat_closest_voice")
+          festcat_closest_voice
+          ;;
+      "configure_template")
+          configure_template
+          ;;
+   esac
+fi
+
