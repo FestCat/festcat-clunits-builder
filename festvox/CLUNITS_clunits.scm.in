@@ -236,7 +236,7 @@ Define voice for @LANG@."
 
   (Param.set 'Language 'catalan)
   ;; Select appropriate phone set
-  (upc_ca_generic::select_phoneset)
+  (upc_ca_generic::select_phoneset_dialect "@DIALECT@")
 
   ;; Select appropriate tokenization
   (upc_ca_generic::select_tokenizer)
@@ -244,13 +244,13 @@ Define voice for @LANG@."
   ;; For part of speech tagging
   (upc_ca_generic::select_tagger)
 
-  (upc_ca_generic::select_lexicon)
+  (upc_ca_generic::select_lexicon_dialect "@DIALECT@")
 
   (upc_ca_generic::select_phrasing)
 
   (upc_ca_generic::select_intonation)
 
-  (upc_ca_generic::select_duration)
+  (upc_ca_generic::select_duration_dialect "@DIALECT@")
 
   (upc_ca_generic::select_f0model)
 
@@ -287,7 +287,7 @@ Define voice for @LANG@."
  '@INST@_@LANG@_@VOX@_clunits
  '((language catalan)
    (gender @GENDER@)
-   (dialect central)
+   (dialect @DIALECT@)
    (coding ISO-8859-15)
    (description
     "Catalan speaker @VOX@ from the Festcat project.")))

@@ -580,6 +580,7 @@ WAVDIR
 FESTVOXDIR
 CLOSESTVOICE
 PROMPTS
+DIALECT
 GENDER
 VOX
 INST
@@ -633,6 +634,7 @@ target_alias
 INST
 VOX
 GENDER
+DIALECT
 PROMPTS
 CLOSESTVOICE
 FESTVOXDIR
@@ -1260,6 +1262,7 @@ Some influential environment variables:
               voices.
   VOX         A nice speaker name, such as "pau", "ona" or "bet".
   GENDER      Either "male" or "female".
+  DIALECT     Native speaker dialect.
   PROMPTS     The prompts.data file
   CLOSESTVOICE
               A similar existing voice ("upc_ca_ona_hts")
@@ -1707,6 +1710,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
+
  # FIXME: Replace this by the required individual components.
 
 if test "x$ESTDIR" = x; then
@@ -1723,6 +1727,11 @@ fi
 
 if test "x$GENDER" = x; then
    as_fn_error $? "GENDER was not set." "$LINENO" 5
+   exit -1
+fi
+
+if test "x$DIALECT" = x; then
+   as_fn_error $? "DIALECT was not set." "$LINENO" 5
    exit -1
 fi
 
@@ -2056,6 +2065,7 @@ test -z "$INSTALL_PROGRAM" && INSTALL_PROGRAM='${INSTALL}'
 test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
+
 
 
 

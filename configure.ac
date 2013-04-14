@@ -4,6 +4,7 @@ AC_INIT([festcat-voice-template], [0.1], [https://github.com/zeehio/festival-ca/
 AC_ARG_VAR(INST, [The first part of the voice name, typically "upc" in FestCat voices. ])
 AC_ARG_VAR(VOX, [ A nice speaker name, such as "pau", "ona" or "bet".])
 AC_ARG_VAR(GENDER, [ Either "male" or "female".])
+AC_ARG_VAR(DIALECT, [ Native speaker dialect.])
 AC_ARG_VAR(PROMPTS, [ The prompts.data file ])
 AC_ARG_VAR(CLOSESTVOICE, [ A similar existing voice ("upc_ca_ona_hts") ])
 AC_ARG_VAR(FESTVOXDIR, [ Festvox directory ])
@@ -24,6 +25,11 @@ fi
 
 if test "x$GENDER" = x; then
    AC_MSG_ERROR(GENDER was not set.)
+   exit -1
+fi
+
+if test "x$DIALECT" = x; then
+   AC_MSG_ERROR(DIALECT was not set.)
    exit -1
 fi
 
@@ -114,6 +120,7 @@ AC_SUBST(LANG)
 AC_SUBST(VOX)
 AC_SUBST(TYPE)
 AC_SUBST(GENDER)
+AC_SUBST(DIALECT)
 AC_SUBST(PROMPTS)
 AC_SUBST(FESTIVALBIN)
 AC_SUBST(FESTDATADIR)

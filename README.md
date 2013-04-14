@@ -13,7 +13,7 @@ hand, you should provide some recordings and the prompts in festival format.
 1. [Speech tools 2.1](http://www.cstr.ed.ac.uk/downloads/festival/2.1/speech_tools-2.1-release.tar.gz)
 2. [Festival 2.1](http://www.cstr.ed.ac.uk/downloads/festival/2.1/festival-2.1-release.tar.gz)
 3. [Festvox 2.4](http://www.speech.cs.cmu.edu/15-492/assignments/tts/packed2010/festvox-2.4-current.tar.gz)
-4. [upc_ca_base](http://festcat.talp.cat/download/upc_ca_base-2.1.5.tgz)
+4. [upc_ca_base](http://festcat.talp.cat/download/upc_ca_base-3.0.1.tgz)
 5. A voice similar to your recordings (i.e: [pep](http://festcat.talp.cat/download/upc_ca_pep_clunits-1.0.tgz)):
 
 ### Prompts and recordings
