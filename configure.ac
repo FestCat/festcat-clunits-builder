@@ -1,5 +1,5 @@
 AC_PREREQ([2.68])
-AC_INIT([festcat-voice-template], [0.1], [https://github.com/zeehio/festival-ca/issues],[festcat-voice-template], [http://festcat.talp.cat])
+AC_INIT([festcat-voice-template], [0.2], [https://github.com/zeehio/festival-ca/issues],[festcat-voice-template], [http://festcat.talp.cat])
 
 AC_ARG_VAR(INST, [The first part of the voice name, typically "upc" in FestCat voices. ])
 AC_ARG_VAR(VOX, [ A nice speaker name, such as "pau", "ona" or "bet".])
