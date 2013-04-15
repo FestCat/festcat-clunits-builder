@@ -77,7 +77,7 @@ CLEAN+= $(PROMPTDIRS)
 
 PROMPTDIRSDIALECT="prompt-utt-dialect" "prompt-lab-dialect"
 prompts-dialect:
-	$(MKDIR_P) $(PROMPTDIRS)
+	$(MKDIR_P) $(PROMPTDIRSDIALECT)
 	$(FESTIVALBIN) -b festvox/build_clunits.scm '(build_prompts_no_wave_dialect "etc/'$(VOICENAME).data'")' || exit 1
 CLEAN+= $(PROMPTDIRSDIALECT)
 

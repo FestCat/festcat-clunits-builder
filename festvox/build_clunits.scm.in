@@ -167,7 +167,7 @@ for prompts and aligning."
      (lambda (l)
        (format t "%s PROMPTS (dialect)\n" (car l))
        (unwind-protect
-        (do_prompt (car l) (cadr l) "prompt-utt-dialect" "prompt-lab-dialect")
+        (do_prompt (car l) (cadr l) "prompt-utt-dialect" "prompt-lab-dialect" "prompt-wav-dialect-not-used")
         nil)
        t)
      p)
