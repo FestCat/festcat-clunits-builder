@@ -38,7 +38,7 @@ function festcat_base() {
 function festcat_closest_voice() {
 	voice="$1"
         cd festival_suite
-        wget "http://festcat.talp.cat/download/${voice}-1.1.tgz"
+        wget "http://festcat.talp.cat/download/${voice}-1.1.tgz" || (echo "Could not download http://festcat.talp.cat/download/${voice}-1.1.tgz"; exit 1 )
         tar xzf ${voice}-1.1.tgz || exit 1
         mkdir -p "festival/lib/voices/catalan" || exit 1
         cp -r "${voice}" "festival/lib/voices/catalan"
@@ -69,22 +69,21 @@ function configure_template() {
 }
 
 
-if [ $# = 1 ] ; then
-   C="$1"
-   shift
-   case "$C" in
-      "festival_suite")
-          festival_suite
-          ;;
-      "festcat_base")
-          festcat_base
-          ;;
-      "festcat_closest_voice")
-          festcat_closest_voice
-          ;;
-      "configure_template")
-          configure_template
-          ;;
-   esac
-fi
+C="$1"
+shift
+case "$C" in
+  "festival_suite")
+    festival_suite
+    ;;
+  "festcat_base")
+    festcat_base
+    ;;
+  "festcat_closest_voice")
+    festcat_closest_voice $@
+    ;;
+  "configure_template")
+    configure_template
+    ;;
+esac
+
 
