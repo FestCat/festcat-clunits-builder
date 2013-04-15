@@ -98,31 +98,6 @@ and then the timings are used as an initial estimation to align
 the phonemes to your recordings. The alignment takes place on the
 `make labs` step.
 
-Here you may see a sample of a label file in xlabel format. The first column
-shows the timing, and the last column shows the phoneme.
-
-> #
-> 0.2033 100 pau
-> 0.3473 100 e1
-> 0.3632 100 r
-> 0.4087 100 ax
-> 0.4888 100 t
-> 0.5567 100 o1
-> 0.6087 100 t
-> 0.6723 100 u
-> 0.7963 100 n
-> 0.9163 100 p
-> 0.9723 100 l
-> 1.0484 100 a1
-> 1.0844 100 i
-> 1.1844 100 n
-> 1.2604 100 k
-> 1.3004 100 l
-> 1.3724 100 i
-> 1.4124 100 n
-> 1.4878 100 a1
-> 1.5398 100 t
-
 In a cross-dialect setup, we have two dialects:
 
  - Speaker dialect
@@ -140,9 +115,7 @@ we cannot use the timings from the closest voice as an initial estimation
 of the recordings.
 
 We need to build a map which converts one phoneme transcription in the other.
-This convertion, if setup automatically could allow us to simulate 
-cross-dialectal synthesis.
-
+(Manual work is also possible)
 
 ### Setup
 
