@@ -30,7 +30,7 @@ CLEAN=
 MKDIR_P = @MKDIR_P@
 
 all: setup prompts labs utts  pm mcep  clunits
-all-cross-dialect: setup prompts prompts-dialect labs labs-dialect utts-dialect pm mcep clunits
+all-cross-dialect: setup prompts prompts-dialect labs utts pm mcep clunits
 
 FROM_FESTVOXGENERALBIN_TO_ETC = emu_lab.tpl emu_pm.tpl emu_f0.tpl emu_hier.tpl
 FROM_FESTVOXGENERALBIN_TO_BIN = make_labs prompt_them make_lpc make_pm make_pm_wave make_pmlab_pm make_pm_pmlab make_pm_fix make_f0 get_lars get_wavs do_build find_powerfactors simple_powernormalize find_powercontours contour_powernormalize make_dist make_cmn traintest make_samples reduce_prompts synthfile
@@ -87,9 +87,9 @@ labs:
 	bin/make_labs prompt-wav/*wav || exit 1
 CLEAN += "cep" "lab" "prompt-cep"
 
-utts-dialect:
-	$(MKDIR_P) "festival/utts"
-	$(FESTIVALBIN) -b festvox/build_clunits.scm '(build_utts_dialect "etc/'$(VOICENAME).data'")' || exit 1
+#utts-dialect:
+#	$(MKDIR_P) "festival/utts"
+#	$(FESTIVALBIN) -b festvox/build_clunits.scm '(build_utts_dialect "etc/'$(VOICENAME).data'")' || exit 1
 
 utts:
 	$(MKDIR_P) "festival/utts"

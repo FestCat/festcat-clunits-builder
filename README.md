@@ -117,6 +117,19 @@ of the recordings.
 We need to build a map which converts one phoneme transcription in the other.
 (Manual work is also possible)
 
+Here is an outline of the required steps:
+
+        make setup 
+        make prompts
+        make prompts-dialect
+        SOME MAGIC_TO_MERGE_prompt-lab_AND_prompt-lab-dialect (Not yet implemented)
+        make labs
+        REPLACE prompt-utt with prompt-utt-dialect (trivial to do, but not implemented yet as can't be tested)
+        make utts
+        make pm
+        make mcep
+        make clunits
+
 ### Setup
 
 This step copies the necessary files from festvox, the recordings 
