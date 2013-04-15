@@ -24,9 +24,9 @@ function festival_suite() {
 
 function festcat_base() {
         cd festival_suite
-        wget "http://festcat.talp.cat/download/upc_ca_base-2.1.5.tgz"
-        tar xzf upc_ca_base-2.1.5.tgz || exit 1
-        cd upc_ca_base-2.1.5
+        wget "http://festcat.talp.cat/download/upc_ca_base-3.0.2.tgz"
+        tar xzf upc_ca_base-3.0.2.tgz || exit 1
+        cd upc_ca_base-3.0.2
         FESTIVALDIR=`pwd`"/festival/bin"
         ./configure --enable-onlyinstall \
         --enable-festivalpath="${FESTIVALDIR}"
@@ -37,10 +37,10 @@ function festcat_base() {
 function festcat_closest_voice() {
 	voice="$1"
         cd festival_suite
-        wget "http://festcat.talp.cat/download/${voice}-1.0.tgz"
-        tar xzf ${voice}-1.0.tgz || exit 1
+        wget "http://festcat.talp.cat/download/${voice}-1.1.tgz"
+        tar xzf ${voice}-1.1.tgz || exit 1
         mkdir -p "festival/lib/voices/catalan" || exit 1
-        cp -r upc_ca_pep_clunits festival/lib/voices/catalan
+        cp -r "${voice}" "festival/lib/voices/catalan"
         cd ..
 
 }

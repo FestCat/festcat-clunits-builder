@@ -38,7 +38,11 @@
 ;;; This file is only used at database build time                       ;;;
 ;;;                                                                     ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;;;                                                                     ;;;
+;;; Customized by Sergio Oller 2013 to allow cross dialectal training   ;;;
+;;; if possible                                                         ;;;
+;;;                                                                     ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar @INST@_@LANG@_@VOX@::dir ".")
 
 (require 'clunits_build)
@@ -121,14 +125,14 @@ Get setup ready for (do_all) (or (do_init))."
   (set! clunits_params @INST@_@LANG@_@VOX@::dt_params)
 )
 
-(define (do_prompt name text) 
-  "(do_prompt name text) 
+(define (do_prompt name text oututt outlab outwav) 
+  "(do_prompt name text oututt outlab outwav) 
 Synthesize given text and save waveform and labels for prompts."
   (let ((utt1 (utt.synth (eval (list 'Utterance 'Text text)))))
-    (utt.save utt1 (format nil "prompt-utt/%s.utt" name))
-    (utt.save.segs utt1 (format nil "prompt-lab/%s.lab" name))
+    (utt.save utt1 (format nil "%s/%s.utt" oututt name))
+    (utt.save.segs utt1 (format nil "%s/%s.lab" outlab name))
     (if (member_string "Wave" (utt.relationnames utt1))
-        (utt.save.wave utt1 (format nil "prompt-wav/%s.wav" name)))
+        (utt.save.wave utt1 (format nil "%s/%s.wav" outwav name)))
     t))
 
 (define (build_prompts file)
@@ -142,7 +146,28 @@ labels for prompts and aligning."
      (lambda (l)
        (format t "%s PROMPTS\n" (car l))
        (unwind-protect
-        (do_prompt (car l) (cadr l))
+        (do_prompt (car l) (cadr l) "prompt-utt" "prompt-lab" "prompt-wav")
+        nil)
+       t)
+     p)
+    t))
+
+(define (build_prompts_no_wave_dialect file)
+  "(build_prompt file) 
+For each utterances in prompt file, synth and save labels 
+for prompts and aligning."
+  (set! @INST@_@LANG@_@VOX@::clunits_prompting_stage t)
+  (voice_@CLOSESTVOICE@)
+  (upc_ca_generic::select_phoneset_dialect "@DIALECT@")
+  (upc_ca_generic::select_lexicon_dialect "@DIALECT@")
+  (upc_ca_generic::select_duration_dialect "@DIALECT@")
+  (Parameter.set 'Synth_Method 'None)
+ (let ((p (load file t)))
+    (mapcar
+     (lambda (l)
+       (format t "%s PROMPTS (dialect)\n" (car l))
+       (unwind-protect
+        (do_prompt (car l) (cadr l) "prompt-utt-dialect" "prompt-lab-dialect")
         nil)
        t)
      p)
@@ -169,7 +194,7 @@ labels for prompts and aligning."
      (lambda (l)
        (format t "%s PROMPTS\n" (car l))
        (unwind-protect
-        (do_prompt (car l) (cadr l))
+        (do_prompt (car l) (cadr l) "prompt-utt" "prompt-lab" "prompt-wav")
         nil)
        t)
      p)

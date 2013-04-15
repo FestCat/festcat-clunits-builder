@@ -13,8 +13,8 @@ hand, you should provide some recordings and the prompts in festival format.
 1. [Speech tools 2.1](http://www.cstr.ed.ac.uk/downloads/festival/2.1/speech_tools-2.1-release.tar.gz)
 2. [Festival 2.1](http://www.cstr.ed.ac.uk/downloads/festival/2.1/festival-2.1-release.tar.gz)
 3. [Festvox 2.4](http://www.speech.cs.cmu.edu/15-492/assignments/tts/packed2010/festvox-2.4-current.tar.gz)
-4. [upc_ca_base](http://festcat.talp.cat/download/upc_ca_base-3.0.1.tgz)
-5. A voice similar to your recordings (i.e: [pep](http://festcat.talp.cat/download/upc_ca_pep_clunits-1.0.tgz)):
+4. [upc_ca_base](http://festcat.talp.cat/download/upc_ca_base-3.0.2.tgz)
+5. A voice similar to your recordings (i.e: [pep](http://festcat.talp.cat/download/upc_ca_pep_clunits-1.1.tgz)):
 
 ### Prompts and recordings
 
@@ -55,6 +55,7 @@ By now you should decide/know:
 
   - The new name for your voice (i.e. `pol`)
   - The gender of your speaker (i.e. `male`)
+  - The dialect of your speaker (i.e. `central`)
   - A similar similar voice to the one you recorded (i.e. `upc_ca_pep_clunits`)
   - The path to your prompt file in festival format
   - The path to your recordings in 16kHz and 16bit wav format.
@@ -62,7 +63,7 @@ By now you should decide/know:
 Use the following syntax (I know the `--enable-festivalpath` is not 
 consistent with the rest of the arguments, that might be changed in the future):
 
-        INST="upc" VOX="pol" GENDER="male" \
+        INST="upc" VOX="pol" GENDER="male" DIALECT="central" \
         CLOSESTVOICE="upc_ca_pep_clunits" \
         PROMPTS="/promptsdirectory/pol.data" \
         WAVDIR="/actualrecordings/wav" \
