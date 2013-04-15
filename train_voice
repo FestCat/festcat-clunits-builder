@@ -24,10 +24,11 @@ function festival_suite() {
 
 function festcat_base() {
         cd festival_suite
+        FESTIVALSUITEDIR="$PWD"
         wget "http://festcat.talp.cat/download/upc_ca_base-3.0.2.tgz"
         tar xzf upc_ca_base-3.0.2.tgz || exit 1
         cd upc_ca_base-3.0.2
-        FESTIVALDIR=`pwd`"/festival/bin"
+        FESTIVALDIR="$FESTIVALSUITEDIR/festival/bin"
         ./configure --enable-onlyinstall \
         --enable-festivalpath="${FESTIVALDIR}"
         make
