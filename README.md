@@ -72,6 +72,8 @@ consistent with the rest of the arguments, that might be changed in the future):
 
 ## Creating the synthetic clunits voice:
 
+### If the "Closest voice" has the same dialect than your speaker
+
 If you type `make` everything will be done. But it's better if you run it 
 step by step understanding what is happening:
 
@@ -82,6 +84,65 @@ step by step understanding what is happening:
         make pm
         make mcep
         make clunits
+
+### If the "Closest voice" has a different dialect than your speaker
+
+**WORK IN PROGRESS: How things work**
+
+The label files should relate the phonemes to the second they appear
+in the recording.
+
+In a setup where both speaker and closest voice dialects are equal, 
+label files are generated for the closest voice during the `make prompts` step
+and then the timings are used as an initial estimation to align 
+the phonemes to your recordings. The alignment takes place on the
+`make labs` step.
+
+Here you may see a sample of a label file in xlabel format. The first column
+shows the timing, and the last column shows the phoneme.
+
+> #
+> 0.2033 100 pau
+> 0.3473 100 e1
+> 0.3632 100 r
+> 0.4087 100 ax
+> 0.4888 100 t
+> 0.5567 100 o1
+> 0.6087 100 t
+> 0.6723 100 u
+> 0.7963 100 n
+> 0.9163 100 p
+> 0.9723 100 l
+> 1.0484 100 a1
+> 1.0844 100 i
+> 1.1844 100 n
+> 1.2604 100 k
+> 1.3004 100 l
+> 1.3724 100 i
+> 1.4124 100 n
+> 1.4878 100 a1
+> 1.5398 100 t
+
+In a cross-dialect setup, we have two dialects:
+
+ - Speaker dialect
+ - Closest voice dialect.
+
+For the speaker dialect we know the phoneme transcription (i.e. computed 
+automatically with previously trained LTS rules) and we want to predict
+the time at which each phoneme is pronounced in the recordings.
+
+For the closest voice dialect, we know the phoneme transcription and we know
+the timings.
+
+As both dialects are different, both phoneme transcriptions are different and
+we cannot use the timings from the closest voice as an initial estimation
+of the recordings.
+
+We need to build a map which converts one phoneme transcription in the other.
+This convertion, if setup automatically could allow us to simulate 
+cross-dialectal synthesis.
+
 
 ### Setup
 
