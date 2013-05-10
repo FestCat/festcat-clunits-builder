@@ -8,7 +8,7 @@
 	0 "ax" "a" "a1" "b" "B" "bb" "d" "D" "dz" "dZ" "e" "E" "e1" "E1"
 	"f" "g" "G" "gg" "gz" "i" "i1" "j" "J" "k" "l" "L" "m" "n"
 	"N" "o" "O" "o1" "O1" "p" "r" "rr" "s" "S" "t" "tS" "u"
-	"u1" "uw" "w" "y" "z" "Z" "pau" "_"
+	"u1" "uw" "v" "w" "y" "z" "Z" "pau" "_"
 )
 ( p.ph_vc
 +
@@ -67,7 +67,7 @@ v
 	0 "ax" "a" "a1" "b" "B" "bb" "d" "D" "dz" "dZ" "e" "E" "e1" "E1"
 	"f" "g" "G" "gg" "gz" "i" "i1" "j" "J" "k" "ks" "l" "L" "m" "n"
 	"N" "o" "O" "o1" "O1" "p" "r" "rr" "s" "S" "t" "tS" "u"
-	"u1" "uw" "w" "y" "z" "Z" "pau" "_"
+	"u1" "uw" "v" "w" "y" "z" "Z" "pau" "_"
 )
 ( n.ph_vc
 +
@@ -192,7 +192,7 @@ mid
 	0 "ax" "a" "a1" "b" "B" "bb" "d" "D" "dz" "dZ" "e" "E" "e1" "E1"
 	"f" "g" "G" "gg" "gz" "i" "i1" "j" "J" "k" "ks" "l" "L" "m" "n"
 	"N" "o" "O" "o1" "O1" "p" "r" "rr" "s" "S" "t" "tS" "u"
-	"u1" "uw" "w" "y" "z" "Z" "pau" "_"
+	"u1" "uw" "v" "w" "y" "z" "Z" "pau" "_"
 )
 ( pp.ph_vc ignore
 +
