@@ -109,7 +109,7 @@ CLEAN += "wavn"
 
 clunits:
 	$(MKDIR_P) "festival/feats" "festival/disttabs" "festival/trees"
-	$(FESTIVALBIN) -b festvox/build_clunits.scm '(build_clunits "etc/'$(VOICENAME).data'")' || exit 1
+	$(FESTIVALBIN) --heap 2000000 -b festvox/build_clunits.scm '(build_clunits "etc/'$(VOICENAME).data'")' || exit 1
 
 CLEAN += "festival/disttabs"
 
