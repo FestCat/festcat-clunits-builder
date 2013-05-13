@@ -124,11 +124,24 @@ Here is an outline of the required steps:
         make prompts-dialect
         SOME MAGIC_TO_MERGE_prompt-lab_AND_prompt-lab-dialect (Not yet implemented)
         make labs
-        REPLACE prompt-utt with prompt-utt-dialect (trivial to do, but not implemented yet as can't be tested)
+        make pre-utts-dialect
         make utts
         make pm
         make mcep
         make clunits
+
+#### About the magic step:
+
+This is not yet implemented. You have two directories:
+ - `prompt-lab`: A directory with the phonetic transcription and segmentation 
+               of prompt-wav in the "closest voice dialect".
+ - `prompt-lab-dialect`: A directory with the phonetic transcription
+               **but not the segmentation** of prompt-wav , in the 
+               "speaker dialect".
+
+In `prompt-lab` there **should** be: A directory with the phonetic
+transcription and segmentation of prompt-wav in the "speaker dialect".
+
 
 ### Setup
 
