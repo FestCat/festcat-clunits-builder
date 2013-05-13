@@ -110,7 +110,7 @@ Build cluster synthesizer for the given recorded data and domain."
   "(build_clunits_init file)
 Get setup ready for (do_all) (or (do_init))."
   (eval (list @INST@_@LANG@_@VOX@::closest_voice))
-  (upc_ca_generic::select_phoneset)
+  (upc_ca_generic::select_phoneset_dialect "@DIALECT@")
 
   ;; Add specific fileids to the list for this run
   (set! @INST@_@LANG@_@VOX@::dt_params
@@ -203,7 +203,7 @@ labels for prompts and aligning."
 (define (build_utts file)
   "(build_utts file) 
 For each utterances in prompt file, synthesize and merge aligned labels
-to predicted labels building a new utetrances and saving it."
+to predicted labels building a new utterances and saving it."
   (set! @INST@_@LANG@_@VOX@::clunits_prompting_stage t)
   (voice_@INST@_@LANG@_@VOX@_clunits)
   (let ((p (load file t)))
@@ -281,7 +281,7 @@ them into the synthesizer utterance."
 
     (mapcar
      (lambda (a)
-      ;; shorten and split sliences
+      ;; shorten and split silences
       (while (and (string-equal (item.name a) silence)
 		  (> (item.feat a "segment_duration") 0.300))
 ;              (format t "splitting %s silence of %f at %f\n"
