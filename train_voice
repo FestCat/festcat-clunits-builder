@@ -47,7 +47,7 @@ function festcat_closest_voice() {
 }
 
 function raw2wav() {
-  which sox || (echo "sox not found. Please install it." ; exit 1 )
+  command -v sox || (echo "sox not found. Please install it." ; exit 1 )
   rawdir="$1"
   sampfreq="$2" # 48000 (sampling frequency in Hz of raw recordings)
   bits="$3" # 16 (bits per sample)
